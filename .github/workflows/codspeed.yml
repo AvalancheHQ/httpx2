@@ -29,8 +29,15 @@ jobs:
       - name: Install dependencies
         run: uv sync --group dev
 
+      - name: Install CodSpeed
+        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/codspeed/releases/download/v4.16.2-alpha.1/codspeed-runner-installer.sh | sh
+
       - name: Run benchmarks
-        uses: CodSpeedHQ/action@3194d9a39c4d46684cb44bf7207fc56626aad8fd # v4.15.1
-        with:
-          mode: simulation
-          run: uv run pytest tests/benchmarks/ --codspeed
+        run: codspeed run --mode simulation -- uv run pytest tests/benchmarks/ --codspeed
+
+      # - name: Run benchmarks
+      #   uses: CodSpeedHQ/action@3194d9a39c4d46684cb44bf7207fc56626aad8fd # v4.15.1
+      #   with:
+      #     # runner-version: v4.16.2-alpha.1
+      #     mode: simulation
+      #     run: uv run pytest tests/benchmarks/ --codspeed
